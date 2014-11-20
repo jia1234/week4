@@ -1,11 +1,12 @@
 float x, y;
-float ballSize=30;
-float speed=5;
-boolean movingUp=false; // either false or true
-boolean movingRight=false;
+float ballSize=70;
+float xspeed=5, yspeed=5;
+float gravity = 0.1;
+float braking = 0.09;
+
 
 void setup() {
-  size(640, 240);
+  size(640, 480);
   y=ballSize*1.5;
   x=width/2;
 }
@@ -15,27 +16,22 @@ void draw() {
   fill(#DD71E5); // use colour selector RGB
   ellipse(x, y, ballSize, ballSize);
 
-  if (y+ballSize/2>=height) {
-    movingUp=true;
-  } else if (y-ballSize/2<=0) {
-    movingUp=false;
+  if (y + ballSize/2 >= height) {
+    yspeed = yspeed * -(1 - braking);
+  } else if (y - ballSize/2 <= 0) {
+    yspeed = yspeed * -(1 - braking);
   }
 
-  if (movingUp) {
-    y=y-speed;
-  } else {
-    y=y+speed;
+  y = y + yspeed;
+
+  if (x + ballSize/2 >= width) {
+    xspeed = xspeed * -(1 - braking);
+  } else if (x - ballSize/2 <= 0) {
+    xspeed = xspeed * -(1 - braking);
   }
 
-  if (x+ballSize/2>=width) {
-    movingRight=true;
-  } else if (x-ballSize/2<=0) {
-    movingRight=false;
-  }
+  x = x + xspeed;
+  
+  yspeed = yspeed + gravity;
 
-  if (movingRight) {
-    x=x-speed;
-  } else {
-    x=x+speed;
-  }
 }
